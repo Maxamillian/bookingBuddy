@@ -63,24 +63,22 @@ var tripUser3 = {
 
 var tripMaster = function(obj) {
   console.log('Creating Trip Master!', obj);
-  // db.query('SELECT * FROM users WHERE email = ($1)', [obj.email], function(err, data) { 
-      db.query('INSERT INTO \
-                      trips(name, description) \
-                      VALUES($1, $2) RETURNING id',
-                      [obj.tripName, obj.description], function(err, tripResults) {
-                        if (err) {
-                           console.log("Error in ", err);
-                          // res.send(err)
-                        }
+  db.query('INSERT INTO \
+                  trips(name, description) \
+                  VALUES($1, $2) RETURNING id',
+                  [obj.tripName, obj.description], function(err, tripResults) {
+                    if (err) {
+                       console.log("Error in db.js on line 71:", err);
+                    }
 
-      db.query('INSERT INTO \
-                      users(namef, namel, email) \
-                      VALUES($1, $2, $3) RETURNING id',
-                      [obj.name, obj.name, obj.email], function(err, userResults) {
-                        console.log(userResults, "userResults")
-                        if (err) {
-                          // res.send(err)
-                        }
+  db.query('INSERT INTO \
+                  users(namef, namel, email) \
+                  VALUES($1, $2, $3) RETURNING id',
+                  [obj.name, obj.name, obj.email], function(err, userResults) {
+                    console.log('userResults:', userResults);
+                    if (err) {
+                      console.error('Error in db.js on line 81:', err)
+                    }
 
       db.query('INSERT INTO \
                       userTrips(user_id, trip_id) \
@@ -154,7 +152,7 @@ var tripMaster = function(obj) {
   //     });
   //   });
   // });
-  
+
 var moreTrips = function(obj) {
   console.log('Creating Additional Trips', obj);
 
@@ -271,5 +269,5 @@ var tripUser = function(obj) {
 module.exports = {
   db : db,
   tripMaster : tripMaster,
-  moreTrips : moreTrips  
+  moreTrips : moreTrips
 }

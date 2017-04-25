@@ -354,7 +354,7 @@ class TripPreferencesForm extends Component {
       <div className="section">
         <div className="row">
           <ul className="collapsible popout" data-collapsible="accordion">
-            {/* LOCATIONS 
+            {/* LOCATIONS
             <li className="locationAccordion">
               <div className="collapsible-header">
                 <strong><i className="material-icons green-text darken-2">location_on</i>Location</strong>
@@ -382,7 +382,7 @@ class TripPreferencesForm extends Component {
             <LocationCard friendsData={this.state.friendsData}  location={this.state.location} locations={this.state.locations} changeLocation={this.changeLocation} addLocation={this.addLocation} />
 
 
-            {/* DURATIONS 
+            {/* DURATIONS
 
             <li className="durationsAccordion">
               <div className="collapsible-header">
@@ -408,11 +408,11 @@ class TripPreferencesForm extends Component {
                 </div>
               </li> */}
 
-             
+
 
               <DurationsCard friendsData={this.state.friendsData}  duration={this.state.duration} changeDuration={this.changeDuration} />
 
-              {/* WHEN 
+              {/* WHEN
 
               <li className="whenAccordion">
                 <div className="collapsible-header">
@@ -442,7 +442,7 @@ class TripPreferencesForm extends Component {
             <WhenCard friendsData={this.state.friendsData} changeBeginDate={this.changeBeginDate}changeEndDate={this.changeEndDate} beginDate={this.state.beginDate} endDate={this.state.endDate} />
 
 
-             {/* BUDGET 
+             {/* BUDGET
 
             <li className="budgetAccordion">
               <div className="collapsible-header">
