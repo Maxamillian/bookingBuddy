@@ -227,6 +227,25 @@ class TripPreferencesForm extends Component {
   //   });
   // }
 
+
+  updateUserTripPreferences(email, tripId, state){
+    //getPrefereces specific to a user and trip
+      //data returned should follow formate of state
+      state.email = email;
+      state.tripId = tripId;
+    $.ajax({
+      type: 'POST',
+      url: '/updateUserTripPreferences',
+      dataType: 'json',
+      data: state,
+      success: function(data) {
+        console.log(data, "Updated User Preferences");
+        // this.setState(data);
+      }.bind(this)
+    });
+  }
+
+
   addLocation (e) {
 
     e.preventDefault();

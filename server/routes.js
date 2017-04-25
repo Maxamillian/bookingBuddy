@@ -15,6 +15,7 @@ router.post('/viewTripBookmark', tripsController.viewTripBookmark);
 router.post('/updateBookmarkVote', tripsController.updateBookmarkVote);
 router.post('/addCommentToBookmark', tripsController.addCommentToBookmark);
 
+router.post('/updateUserTripPreferences', usersController.updateUserTripPreferences);
 router.post('/userTripNames', usersController.userTripNames);
 router.post('/userLocations', usersController.getUserLocations);
 router.post('/registerUser', usersController.registerUser);

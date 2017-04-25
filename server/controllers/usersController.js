@@ -26,7 +26,8 @@ module.exports.registerUser = function(req, res, next) {
 
 module.exports.email = function(obj) {
   console.log("IN EMAIL!", obj.body);
-  if(obj.body.length > 0) {
+  if(obj.body.buddies.length > 0) {
+    console.log("IN THERE!")
     setTimeout(function(){
       var checkEmail = obj.body.buddies[0].email;
       db.query('SELECT id FROM users where namef = ($1)', [obj.body.buddies[0].name], function(err, results) {
@@ -55,7 +56,7 @@ module.exports.email = function(obj) {
                     to: item.email, // list of receivers
                     subject: 'Hey ' + item.name + ', '+obj.body.name+ ' has invited you on an exclusive vacation!', // Subject line
                     text: 'Whatever we want to tell the db ', // plain text body
-                    html: '<b>Its vacation time! Go to the following link to plan your group vacation.</b>' + ' http://localhost:3000/profile<br><b> Enjoy enjoy!</b>' // html body
+                    html: '<h1>Its vacation time! Go to the following link to plan your group vacation.</h1>' + ' http://localhost:3000/profile<br><div><img src="http://charnos.pl/wp-content/uploads/2015/08/wakacje.jpg"</div>' // html body
                   };
 
                   transporter.sendMail(mailOptions, (error, info) => {
@@ -71,8 +72,14 @@ module.exports.email = function(obj) {
         };
       });
     }, 500);
-  }
+  };
 };
+
+module.exports.updateUserTripPreferences = function(req, res) {
+  console.log(req.body, "Preferences object!");
+
+
+}
 
 module.exports.userTripNames = function(req, res) {
   console.log(req.body);

@@ -68,7 +68,7 @@ var tripMaster = function(obj) {
                   VALUES($1, $2) RETURNING id',
                   [obj.tripName, obj.description], function(err, tripResults) {
                     if (err) {
-                      // console.log(tripResults);
+                       console.log("Error in ", err);
                       // res.send(err)
                     }
 
@@ -76,7 +76,7 @@ var tripMaster = function(obj) {
                   users(namef, namel, email) \
                   VALUES($1, $2, $3) RETURNING id',
                   [obj.name, obj.name, obj.email], function(err, userResults) {
-                    // console.log(userResults, "userResults")
+                    console.log(userResults, "userResults")
                     if (err) {
                       // res.send(err)
                     }
