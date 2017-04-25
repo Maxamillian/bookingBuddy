@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-// import {hotelRecomendations} from './data/tripRoomDummyData';
-import TripRecomendationsCards from './tripRoomComponents/newRecomendations/tripRecomendationsCards.jsx';
-import GroupPreferencesBar from './tripRoomComponents/groupPreferences/groupPreferencesBar.jsx';
-import TripBookmarksList from './tripRoomComponents/bookmarks/tripBookmarksList.jsx';
-import TripRoomChat from './tripRoomComponents/Chat/TripRoomChat.jsx';
-import Loading from './tripRoomComponents/Loading/Loading.jsx';
+import {hotelRecomendations} from '../data/tripRoomDummyData';
+import TripRecomendationsCards from './newRecomendations/tripRecomendationsCards.jsx';
+import GroupPreferencesBar from './groupPreferences/groupPreferencesBar.jsx';
+import TripBookmarksList from './bookmarks/tripBookmarksList.jsx';
+import TripRoomChat from './Chat/TripRoomChat.jsx';
 
 //props: tripData, profile
-class TripRoom extends Component {
+class TripRoomComponents extends Component {
 
   constructor (props) {
     super(props);
@@ -15,17 +14,15 @@ class TripRoom extends Component {
     this.addBookmark = this.addBookmark.bind(this);
     this.updateBookmarkVote = this.updateBookmarkVote.bind(this);
     this.addBookmarkComment = this.addBookmarkComment.bind(this);
-    this.fetchTripInformationFromDb = this.fetchTripInformationFromDb.bind(this);
-    this.getTripRecomendationFromExpedia = this.getTripRecomendationFromExpedia.bind(this);
     this.state = {
-      bookmarks: [],
-      hotelRecomendations: [],
-      locations: [],
-      selectedLocation: '',
-      beginning: '',
-      duration: 0,
-      ending: '',
-      averageNightlyHotelBudget: 0
+      bookmarks: props.tripData.bookmarks,
+      hotelRecomendations: hotelRecomendations,
+      locations: props.tripData.commonLocations,
+      selectedLocation: props.tripData.commonLocations[0],
+      beginning: props.tripData.commonDates.beginning ,
+      duration: props.tripData.commonDates.duration,
+      ending: props.tripData.commonDates.ending,
+      averageNightlyHotelBudget: props.tripData.averageNightlyHotelBudget
     };
   }
 
@@ -187,57 +184,18 @@ class TripRoom extends Component {
     });
   };
 
+
   componentDidMount() {
-    console.log('getting current trip data for trip # ' + this.props.tripId);
-    this.fetchTripInformationFromDb(this.props.tripId);
-  }
-
-  fetchTripInformationFromDb(Id){
-    console.log("GETTING TRIP DATA FROM DB!")
-    $.ajax({
-      type: 'POST',
-      url: '/getTripData',
-      dataType: 'json',
-      data: { tripId : Id },
-      success: function(data) {
-        console.log(data, "Data");
-        var loadedTripData = {
-          tripId: data.tripId,
-          tripName: data.tripName,
-          commonDates: data.commonDates,
-          beginning: data.commonDates.beginning,
-          duration: data.commonDates.duration,
-          ending: data.commonDates.ending,
-          locations: data.commonTrips,
-          selectedLocation: data.commonTrips[0] || '',
-          commonLocations: data.commonTrips,
-          averageNightlyHotelBudget: data.averageNightlyHotelBudget,
-          buddyList: data.buddyList,
-          bookmarks: data.bookmarks
-        }
-        this.setState(loadedTripData);
-        this.getTripRecomendationFromExpedia();
-      }.bind(this)
-    }.bind(this));
-  }
-
-  getTripRecomendationFromExpedia(){
-    console.log('off to see bout dem expedia recs you asked for...');
 
     var expediaQueryParams = {
-      beginningDate : this.state.beginning, //this.state.beginning,
-      endingDate : '5/12/2017', //this.state.ending,
-      location : this.state.selectedLocation, //this.state.selectedLocation
+      beginningDate : this.state.beginning,
+      endingDate : this.state.ending,
+      location : this.state.selectedLocation
     };
-    console.log('this.state.beginning');
-    console.log(this.state.beginning);
-    console.log(typeof this.state.beginning);
-
-    console.log('expediaQueryParams', expediaQueryParams);
 
     var handleResults = function(expediaResults){
       expediaResults = expediaResults.HotelSummary;
-      console.log('handling results from expedia', expediaResults);
+      console.log(expediaResults);
       this.setState({
         hotelRecomendations: expediaResults
       });
@@ -249,66 +207,56 @@ class TripRoom extends Component {
       dataType: 'json',
       data: expediaQueryParams,
       success: function(expediaResults) {
-        console.log(expediaResults, "expediaResults have arrived!");
+        console.log(expediaResults, "expediaResults");
         handleResults(expediaResults);
       }
     });
   }
 
 
-
-
   render() {
 
-    if(!this.state.hotelRecomendations.length){
-      console.log('Loading!', this.state);
-      return (
-        <Loading />
-      );
-    } else {
-      console.log('hotel recs have arrived: checkout da state:', this.state);
-      return (
-        <div>
+    return (
+      <div>
 
-          <div className="row">
-            <div className="col s12 m7 l8 tripRoomMainContentContainer">
-                <h1 className="orange-text darken-2">{this.state.tripName}</h1>
-                <GroupPreferencesBar
-                        averageNightlyHotelBudget={this.state.averageNightlyHotelBudget}
-                        beginning={this.state.beginning}
-                        ending={this.state.ending}
-                        locations={this.state.locations}
-                        selectedLocation={this.state.selectedLocation}
-                        setLocation={this.setLocation}
-                  />
-                <TripRecomendationsCards
-                  hotelRecomendations={this.state.hotelRecomendations}
-                  addBookmark={this.addBookmark}
-                  />
-                <TripBookmarksList
-                  bookmarks={this.state.bookmarks}
-                  profile={this.props.profile}
-                  expediaParams={this.state}
-                  updateBookmarkVote={this.updateBookmarkVote}
-                  addBookmarkComment={this.addBookmarkComment}
+        <div className="row">
+          <div className="col s12 m7 l8 tripRoomMainContentContainer">
+              <h1 className="orange-text darken-2">'Hiking Trip'</h1>
+              <GroupPreferencesBar
+                      averageNightlyHotelBudget={this.state.averageNightlyHotelBudget}
+                      beginning={this.state.beginning}
+                      ending={this.state.ending}
+                      locations={this.state.locations}
+                      selectedLocation={this.state.selectedLocation}
+                      setLocation={this.setLocation}
                 />
-            </div>
-            <div className="tripRoomChatContainer col s12 m5 offset-m7 l4 offset-l8 pinned card-panel green lighten-3 hide-on-small-only" style={{'height':'100%'}}>
-              <h4>Booking Buddies</h4>
-              <ul>
-                <li>Lou</li>
-                <li>Max</li>
-                <li>Preston</li>
-                <li>Nate</li>
-                <li>Jesse</li>
-              </ul>
-              <TripRoomChat />
-            </div>
+              <TripRecomendationsCards
+                hotelRecomendations={this.state.hotelRecomendations}
+                addBookmark={this.addBookmark}
+                />
+              <TripBookmarksList
+                bookmarks={this.state.bookmarks}
+                profile={this.props.profile}
+                expediaParams={this.state}
+                updateBookmarkVote={this.updateBookmarkVote}
+                addBookmarkComment={this.addBookmarkComment}
+              />
+          </div>
+          <div className="tripRoomChatContainer col s12 m5 offset-m7 l4 offset-l8 pinned card-panel green lighten-3 hide-on-small-only" style={{'height':'100%'}}>
+            <h4>Booking Buddies</h4>
+            <ul>
+              <li>Lou</li>
+              <li>Max</li>
+              <li>Preston</li>
+              <li>Nate</li>
+              <li>Jesse</li>
+            </ul>
+            <TripRoomChat />
           </div>
         </div>
-      );
-    }
+      </div>
+    );
   }
 };
 
-export default TripRoom;
+export default TripRoomComponents;
