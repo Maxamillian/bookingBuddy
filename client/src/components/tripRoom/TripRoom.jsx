@@ -218,7 +218,7 @@ class TripRoom extends Component {
         this.setState(loadedTripData);
         this.getTripRecomendationFromExpedia();
       }.bind(this)
-    });
+    }.bind(this));
   }
 
   getTripRecomendationFromExpedia(){
@@ -288,9 +288,6 @@ class TripRoom extends Component {
       }
     });
   }
-
-
-
 
   render() {
 
