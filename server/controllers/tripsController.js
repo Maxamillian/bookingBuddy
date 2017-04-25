@@ -61,6 +61,7 @@ module.exports.getTripPreferences = function(req, res, next) {
       var name = item.namef;
       obj[name] = {locations:[]};
         db.query('select name from locations where user_trip_id = (select id from userTrips where user_id = (select id from users where namef = ($1)))', [name], function(err, location) { 
+          console.log(location, "LOCATION!")
           location.rows.forEach(function(item, ind, coll) {
             obj[name].locations.push(item.name);
           });
@@ -294,42 +295,7 @@ module.exports.viewTripBookmark = function(req, res, next) {
   });
 }
 
+module.exports.editUserPreferences = function(req, res, next) {
 
-module.exports.commonTripDates = function(req, res, next) {
-  console.log(req.body,'Getting common date(s)...');
-  //key represents the trip id
-  //gets common trip location(s) out of all user locations associated with a certain trip
-  var commonDateObj = {beginning: '', ending: '', duration: ''};
-  db.query('SELECT beging FROM dates WHERE trip_number = ($1)', [req.body.id], function(err, data) {
-    var begHighMon = [];
-    var begHighDay = [];
-    var begHighYear = [];
-    for (var i = 0; i < data.rows.length; i++) {
-      begHighMon.push(parseInt(data.rows[i].beging.slice(0, 2)));
-      begHighDay.push(parseInt(data.rows[i].beging.slice(3, 5)));
-      begHighYear.push(parseInt(data.rows[i].beging.slice(6, 10)));
-    }
-    commonDateObj.beginning += Math.max(...begHighMon) + '/';
-    commonDateObj.beginning += Math.max(...begHighDay) + '/';
-    commonDateObj.beginning += Math.max(...begHighYear);
 
-    db.query('SELECT ending FROM dates WHERE trip_number = ($1)', [req.body.id], function(err, data) {
-      var endHighMon = [];
-      var endHighDay = [];
-      var endHighYear = [];
-      for (var i = 0; i < data.rows.length; i++) {
-        endHighMon.push(parseInt(data.rows[i].ending.slice(0, 2)));
-        endHighDay.push(parseInt(data.rows[i].ending.slice(3, 5)));
-        endHighYear.push(parseInt(data.rows[i].ending.slice(6, 10)));
-      }
-      commonDateObj.ending += Math.min(...endHighMon) + '/';
-      commonDateObj.ending += Math.min(...endHighDay) + '/';
-      commonDateObj.ending += Math.min(...endHighYear);
-      console.log(commonDateObj, "Common Dates...");
-      db.query('SELECT duration FROM dates WHERE trip_number = ($1)', [req.body.id], function(err, data) {
-        commonDateObj.duration = data.rows[0].duration;
-        res.send(commonDateObj);
-      });
-    });
-  });
 };

@@ -75,7 +75,7 @@ module.exports.email = function(obj) {
   };
 };
 
-module.exports.updateUserTripPreferences = function(req, res) {
+module.exports.updateUserTripPreference = function(req, res) {
   console.log(req.body, "Preferences object!");
 
 

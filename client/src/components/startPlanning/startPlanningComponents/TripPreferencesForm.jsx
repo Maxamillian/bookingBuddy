@@ -125,6 +125,7 @@ class TripPreferencesForm extends Component {
     this.changeBeginDate = this.changeBeginDate.bind(this);
     this.changeEndDate = this.changeEndDate.bind(this);
     this.handleData = this.handleData.bind(this);
+    this.updateUserTripPreferences = this.updateUserTripPreferences.bind(this);
     this.state = {
       locations: [],
       hotelBudget: 0,
@@ -228,19 +229,22 @@ class TripPreferencesForm extends Component {
   // }
 
 
-  updateUserTripPreferences(email, tripId, state){
+  updateUserTripPreferences(){
     //getPrefereces specific to a user and trip
       //data returned should follow formate of state
-      state.email = email;
-      state.tripId = tripId;
+      var obj = this.state;
+      obj.email = this.props.userEmail 
+      obj.tripId = this.props.tripId
+      console.log("updateUserTripPreferences!!");
     $.ajax({
       type: 'POST',
       url: '/updateUserTripPreferences',
       dataType: 'json',
-      data: state,
+      data: obj,
       success: function(data) {
         console.log(data, "Updated User Preferences");
-        // this.setState(data);
+        this.setState(data);
+        console.log(this.state);
       }.bind(this)
     });
   }
@@ -483,11 +487,13 @@ class TripPreferencesForm extends Component {
 
             <BudgetCard friendsData={this.state.friendsData} activitiesBudget={this.state.activitiesBudget} hotelBudget={this.state.hotelBudget} flightBudget={this.state.flightBudget} changeActivitiesBudget={this.changeActivitiesBudget} changeHotelBudget={this.changeHotelBudget} changeFlightBudget={this.changeFlightBudget} totalBudget={this.state.totalBudget}/>
           </ul>
+          <div>
         </div>
+        </div>
+        <Link className="orange btn" onClick={this.updateUserTripPreferences} to="/start-planning/trip-create">Update Preferences</Link>
       </div>
     );
   }
-
 }
 
 // const TripPreferencesForm = () => (

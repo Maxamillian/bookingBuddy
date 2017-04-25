@@ -8,14 +8,14 @@ var usersController = require('./controllers/usersController');
 router.post('/expedia', APIsController.expediaAPI);
 router.post('/hotwire', APIsController.hotwirePostRequest);
 
-router.post('/commonTripDates', tripsController.commonTripDates);
+// router.post('/commonTripDates', tripsController.commonTripDates);
 router.post('/getTripData', tripsController.getTripData);
 router.post('/addNewBookmarktoDB', tripsController.addTripBookmark);
 router.post('/viewTripBookmark', tripsController.viewTripBookmark);
 router.post('/updateBookmarkVote', tripsController.updateBookmarkVote);
 router.post('/addCommentToBookmark', tripsController.addCommentToBookmark);
 
-router.post('/updateUserTripPreferences', usersController.updateUserTripPreferences);
+router.post('/updateUserTripPreferences', usersController.updateUserTripPreference);
 router.post('/userTripNames', usersController.userTripNames);
 router.post('/userLocations', usersController.getUserLocations);
 router.post('/registerUser', usersController.registerUser);
