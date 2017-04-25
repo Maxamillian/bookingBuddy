@@ -37,22 +37,18 @@ class TripRoom extends React.Component {
       data: { tripId : Id },
       success: function(data) {
         console.log(data, "Data");
-        this.setState({tripDate: data});
-        $.ajax({
-          type: 'POST',
-          url: '/expedia',
-          dataType: 'json',
-          data: { beginningDate : data.commonDates.beginning,
-            endingDate : data.commonDates.ending,
-            location : data.commonTrips[0]
-          },
-          success: function(expediaResults) {
-            console.log(expediaResults, "expediaResults");
-            // this.setState({expediaResults: expediaResults});
-          }.bind(this)
-        });
+        var loadedTripData = {
+          tripId: data.tripId,
+          tripName: data.tripName,
+          commonDates: data.commonDates,
+          commonLocations: data.commonTrips,
+          averageNightlyHotelBudget: data.averageNightlyHotelBudget,
+          buddyList: data.buddyList,
+          bookmarks: data.bookmarks
+        }
+        this.setState({tripData: loadedTripData});
       }.bind(this)
-    });
+    }.bind(this));
   }
 
   render() {
@@ -60,8 +56,9 @@ class TripRoom extends React.Component {
       <div>
         <TripRoomComponents
           tripData={tripData}
-          tripId={this.props.tripId}
           profile={this.props.profile}
+
+          tripId={this.props.tripId}
           hotelRecomendations={hotelRecomendations}
         />
       </div>
@@ -74,23 +71,23 @@ export default TripRoom;
 
 
 // var tripData  = {
-//   tripId: 12345,
-//   tripName: 'Hiking Trip',
-//   commonDates:  {
+//   tripId: 12345,             //PERFECT
+//   tripName: 'Hiking Trip',   //PERFECT
+//   commonDates:  {.           //PERFECT
 //     beginning: '4/29/2017',
 //     duration: 4,
 //     ending: '5/12/2017'
 //   },
-//   commonLocations: [
+//   commonLocations: [        //commonTrips
 //     'cityName1',
 //     'cityName2'
 //   ],
-//   averageNightlyHotelBudget: 127.00,
-//   buddyList: [{
+//   averageNightlyHotelBudget: 127.00,    //PERFECT
+//   buddyList: [{                          //PERFECT
 //       name: 'Lou',
 //       email: 'formMasterLou@gmail.com',
 //     }],
-//   bookmarks: [{
+//   bookmarks: [{                            //PERFECT. (not sure about contents yet)
 //     bookmarkID: Date.now(),
 //     tripId: 23,
 //     bookmarkerName: 'Lou',

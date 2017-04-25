@@ -5,7 +5,7 @@ import GroupPreferencesBar from './groupPreferences/groupPreferencesBar.jsx';
 import TripBookmarksList from './bookmarks/tripBookmarksList.jsx';
 import TripRoomChat from './Chat/TripRoomChat.jsx';
 
-//props: tripData, tripId, profile
+//props: tripData, profile
 class TripRoomComponents extends Component {
 
   constructor (props) {
@@ -18,7 +18,7 @@ class TripRoomComponents extends Component {
       bookmarks: props.tripData.bookmarks,
       hotelRecomendations: hotelRecomendations,
       locations: props.tripData.commonLocations,
-      selectedLocation: '',
+      selectedLocation: props.tripData.commonLocations[0],
       beginning: props.tripData.commonDates.beginning ,
       duration: props.tripData.commonDates.duration,
       ending: props.tripData.commonDates.ending,
@@ -57,7 +57,7 @@ class TripRoomComponents extends Component {
       buddyEmail: buddy.email,
       buddyVote: 0
     }));
-    newBookmark['tripId'] = this.props.tripId;
+    newBookmark['tripId'] = this.props.tripData.tripId;
     newBookmark['bookmarkerName'] = this.props.profile.given_name;
     newBookmark['bookmarkComments']= [];
 
@@ -185,6 +185,35 @@ class TripRoomComponents extends Component {
   };
 
 
+  componentDidMount() {
+
+    var expediaQueryParams = {
+      beginningDate : this.state.beginning,
+      endingDate : this.state.ending,
+      location : this.state.selectedLocation
+    };
+
+    var handleResults = function(expediaResults){
+      expediaResults = expediaResults.HotelSummary;
+      console.log(expediaResults);
+      this.setState({
+        hotelRecomendations: expediaResults
+      });
+    }.bind(this);
+
+    $.ajax({
+      type: 'POST',
+      url: '/expedia',
+      dataType: 'json',
+      data: expediaQueryParams,
+      success: function(expediaResults) {
+        console.log(expediaResults, "expediaResults");
+        handleResults(expediaResults);
+      }
+    });
+  }
+
+
   render() {
 
     return (
@@ -202,7 +231,7 @@ class TripRoomComponents extends Component {
                       setLocation={this.setLocation}
                 />
               <TripRecomendationsCards
-                hotelRecomendations={this.props.hotelRecomendations}
+                hotelRecomendations={this.state.hotelRecomendations}
                 addBookmark={this.addBookmark}
                 />
               <TripBookmarksList
