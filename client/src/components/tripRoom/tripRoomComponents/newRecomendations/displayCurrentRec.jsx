@@ -21,6 +21,13 @@ var hasRemainder = function(stars) {
   }
 }
 
+var convertToFullImageUrl = function(thumbNailUrl){
+  var fullImageUrl = 'http://media.expedia.com';
+  fullImageUrl += thumbNailUrl;
+  fullImageUrl = fullImageUrl.slice(0, fullImageUrl.length - 5) + 'z' + fullImageUrl.slice( fullImageUrl.length - 4);
+  return fullImageUrl;
+};
+
 var DisplayCurrentRec = function({currentRec}) {
 
   var imageContainerStyle = {
@@ -30,22 +37,24 @@ var DisplayCurrentRec = function({currentRec}) {
     overflow: 'hidden',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundImage: 'url(' + currentRec.Image + ')'
+    backgroundImage: 'url(' + convertToFullImageUrl(currentRec.thumbNailUrl) + ')'
   };
+
+  console.log('currendRec', currentRec);
 
   return (
     <div>
       <div className="card-image" style={imageContainerStyle}>
-        <span className="card-title">{currentRec.HotelName}</span>
+        <span className="card-title">{currentRec.name}</span>
       </div>
       <div className="card-content">
         <div>
           <span className='left-align'>
-            <i className="material-icons orange-text">{countStars(currentRec.StarRating)}</i>{hasRemainder(currentRec.StarRating)}
+            <i className="material-icons orange-text">{countStars(currentRec.tripAdvisorRating)}</i>{hasRemainder(currentRec.tripAdvisorRating)}
           </span>
-          <span className='right'> ${currentRec.Price} / night </span>
+          <span className='right'> ${currentRec.lowRate} - ${currentRec.highRate} / night </span>
         </div>
-        <p>{currentRec.Description}</p>
+        <p>{currentRec.locationDescription}</p>
       </div>
     </div>
   );
