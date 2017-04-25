@@ -20,34 +20,43 @@ var server = app.listen(port, function() {
 });
 
 // Socket stuff
-// var io = socket(server);
+var io = socket(server);
 
-// io.on('connection', function (socket) {
-//   console.log('user connected');
+io.on('connection', function (socket) {
 
-//   // Used in LandingPage and TripRoom
-//   // socket.on('new message', function(data) {
-//   //   socket.broadcast.emit('new message', {
-//   //     name: data.name,
-//   //     text: data.text,
-//   //     color: data.color
-//   //   });
-//   // });
+  socket.on('room', function(tripRoomChat) {
+    console.log('user joined:', tripRoomChat);
+    if(socket.tripRoomChat){
+      socket.leave(socket.tripRoomChat);
+    }
+    socket.join(tripRoomChat);
+    socket.tripRoomChat = tripRoomChat;
+  });
 
-//   // Used in buddyVoteSlider
-//   socket.on('new vote', function (data) {
-//     socket.broadcast.emit('new vote', {
-//       bookmarkId: data.bookmarkId,
-//       buddyName: data.buddyName,
-//       num: data.num
-//     });
-//   });
+  // Used in LandingPage and TripRoom
+  socket.on('new message', function(data) {
+    console.log(data.text, ' heard in: ', socket.tripRoomChat);
+    socket.broadcast.in(socket.tripRoomChat).emit('new message', {
+      name: data.name,
+      text: data.text,
+      color: data.color
+    });
+  });
 
-//   socket.on('disconnect', function(){
-//     console.log('user disconnected');
-//   });
+  // Used in buddyVoteSlider
+  socket.on('new vote', function (data) {
+    socket.broadcast.emit('new vote', {
+      bookmarkId: data.bookmarkId,
+      buddyName: data.buddyName,
+      num: data.num
+    });
+  });
 
-// });
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+
+});
 
 
 module.exports = app;

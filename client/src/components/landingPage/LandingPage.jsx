@@ -29,20 +29,27 @@ var ChatMessages = function({name, text, color}) {
 class LandingPage extends Component {
   constructor(props) {
     super(props);
+    this.handleRoomChange = this.handleRoomChange.bind(this);
     this.state = {
-      messages: []
+      messages: [],
+      socket: io(),
+      activeRoom: 'Gotham'
     };
 
-    // socket.on('new message', function(data) {
-    //   this.setState({
-    //   messages: this.state.messages.concat(
-    //     {
-    //       name: data.name,
-    //       text: data.text,
-    //       color: data.color
-    //     })
-    //   });
-    // }.bind(this));
+    this.state.socket.on('connect', function() {
+      this.state.socket.emit('room', this.state.activeRoom);
+    }.bind(this));
+
+    this.state.socket.on('new message', function(data) {
+      this.setState({
+      messages: this.state.messages.concat(
+        {
+          name: data.name,
+          text: data.text,
+          color: data.color
+        })
+      });
+    }.bind(this));
   }
 
   sendMessage() {
@@ -57,11 +64,11 @@ class LandingPage extends Component {
     });
     $('#chatTextField').val('');
 
-    // socket.emit('new message', {
-    //   name: 'Someone',
-    //   text: text,
-    //   color: randomColor
-    // });
+    this.state.socket.emit('new message', {
+      name: 'Someone',
+      text: text,
+      color: randomColor
+    });
   }
 
   updateMessage(event) {
@@ -70,14 +77,25 @@ class LandingPage extends Component {
     }
   }
 
+  handleRoomChange(event) {
+    this.state.socket.emit('room', event.target.value);
+
+    this.setState({
+      activeRoom: event.target.value
+    });
+
+  }
+
   componentDidMount() {
     $(document).ready(function() {
       $('.carousel').carousel();
       $('.parallax').parallax();
+      $('select').material_select();
     });
   }
 
   render() {
+    console.log(this.state.activeRoom);
     return (
       <div>
         <div className="no-pad-bot" id="index-banner">
@@ -176,13 +194,14 @@ class LandingPage extends Component {
             <h5 className="header col s12 light">Chat with your friends about the results and brainstorm ideas.</h5>
             <br />
 
-
-
-
-
-
-
-
+            <div className="input-field">
+              <select className="browser-default" value={this.state.activeRoom} onChange={this.handleRoomChange.bind(this)}>
+                <option value="Gotham">Gotham</option>
+                <option value="MiddleEarth">MiddleEarth</option>
+                <option value="Narnia">Narnia</option>
+                <option value="Tatooine">Tatooine</option>
+              </select>
+            </div>
 
             <div className="col s12 m6">
               <div className="chat card grey lighten-4">
