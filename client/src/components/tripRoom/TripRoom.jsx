@@ -55,12 +55,12 @@ class TripRoom extends Component {
     }
 
     newBookmark['bookmarkID'] = Date.now();
-    newBookmark['buddyVotes'] = this.props.tripData.buddyList.map((buddy) => ({
-      buddyName: buddy.name,
+    newBookmark['buddyVotes'] = this.state.buddyList.map((buddy) => ({
+      buddyName: buddy.name.split(' ')[0],
       buddyEmail: buddy.email,
       buddyVote: 0
     }));
-    newBookmark['tripId'] = this.props.tripData.tripId;
+    newBookmark['tripId'] = this.state.tripId;
     newBookmark['bookmarkerName'] = this.props.profile.given_name;
     newBookmark['bookmarkComments']= [];
 
