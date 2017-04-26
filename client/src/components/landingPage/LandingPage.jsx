@@ -208,21 +208,21 @@ class LandingPage extends Component {
                 <div className="card-content">
                   <div>
                     <p className="blue-text">Preston</p>
-                    <div className="chip blue-text">
+                    <div className="chatMessageContainer blue-text">
                       Hey guys looks like we all are free to travel in a few weeks...
                     </div>
                   </div>
 
                   <div>
                     <p className="green-text">Nate</p>
-                    <div className="chip green-text">
+                    <div className="chatMessageContainer green-text">
                       Yeah that looks like the best time! Where do you guys want to go? Looks like we had a lot of overlap
                     </div>
                   </div>
 
                   <div>
                     <p className="red-text">Max</p>
-                    <div className="chip red-text">
+                    <div className="chatMessageContainer red-text">
                       Personally, the carribean would be my top choice!
                     </div>
                   </div>
