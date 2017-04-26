@@ -256,37 +256,6 @@ class TripRoom extends Component {
   }
 
 
-    var expediaQueryParams = {
-      beginningDate : this.state.beginning, //this.state.beginning,
-      endingDate : '5/12/2017', //this.state.ending,
-      location : this.state.selectedLocation, //this.state.selectedLocation
-    };
-    console.log('this.state.beginning');
-    console.log(this.state.beginning);
-    console.log(typeof this.state.beginning);
-
-    console.log('expediaQueryParams', expediaQueryParams);
-
-    var handleResults = function(expediaResults){
-      expediaResults = expediaResults.HotelSummary;
-      console.log('handling results from expedia', expediaResults);
-      this.setState({
-        hotelRecomendations: expediaResults
-      });
-    }.bind(this);
-
-    $.ajax({
-      type: 'POST',
-      url: '/expedia',
-      dataType: 'json',
-      data: expediaQueryParams,
-      success: function(expediaResults) {
-        console.log(expediaResults, "expediaResults have arrived!");
-        handleResults(expediaResults);
-      }
-    });
-  }
-
   getTripRecomendationFromExpedia(){
     console.log('off to see bout dem expedia recs you asked for...');
 
