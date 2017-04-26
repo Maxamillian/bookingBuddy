@@ -12,7 +12,7 @@ const NavBarLinks = ({isLoggedIn, logInOrOut}) => (
   <nav>
     <div className="nav-wrapper green lighten-1">
       <NavLink id="logo-container" exact to="/" className="brand-logo">Booking Buddy</NavLink>
-      <ul className="right hide-on-med-and-down">
+      <ul className="right hide-on-small-only">
         {
           isLoggedIn ?
             <span>
