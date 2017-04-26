@@ -13,9 +13,9 @@ db.connect(function (err) {
   db.query('CREATE TABLE \
                   users( \
                   id SERIAL PRIMARY KEY, \
-                  nameF VARCHAR(30) not null, \
-                  nameL VARCHAR(30) not null, \
-                  email VARCHAR(25) not null)');
+                  nameF VARCHAR(50) not null, \
+                  nameL VARCHAR(50) not null, \
+                  email VARCHAR(50) not null)');
 
   db.query('CREATE TABLE \
                   trips( \

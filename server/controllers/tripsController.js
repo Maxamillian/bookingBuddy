@@ -60,26 +60,33 @@ module.exports.getTripPreferences = function(req, res, next) {
     data.rows.forEach(function(item, index, coll) {
       var name = item.namef;
       obj[name] = {locations:[]};
+      console.log(item, "NAMEF!")
         db.query('select name from locations where user_trip_id = (select id from userTrips where user_id = (select id from users where namef = ($1)))', [name], function(err, location) { 
-          console.log(location, "LOCATION!")
-          location.rows.forEach(function(item, ind, coll) {
-            obj[name].locations.push(item.name);
-          });
+          if(location !== undefined) {
+            console.log(location, "LOCATION!")
+            location.rows.forEach(function(item, ind, coll) {
+              obj[name].locations.push(item.name);
+            });
+          };
         });
           
         db.query('select * from dates where trip_id = (select id from userTrips where user_id = (select id from users where namef = ($1)))', [name], function(err, dates) {
-          if(dates.rows.length > 0) {
-            obj[name].beginDate = dates.rows[0].beging;
-            obj[name].endDate = dates.rows[0].ending;
-            obj[name].duration = parseInt(dates.rows[0].duration);
+          if(dates !== undefined) {
+            if(dates.rows.length > 0) {
+              obj[name].beginDate = dates.rows[0].beging;
+              obj[name].endDate = dates.rows[0].ending;
+              obj[name].duration = parseInt(dates.rows[0].duration);
+            };
           };
         });
         db.query('select * from budget where trip_id = (select id from userTrips where user_id = (select id from users where namef = ($1)))', [name], function(err, budget) {
-          if(budget.rows.length > 0) {
-            obj[name].hotelBudget = parseInt(budget.rows[0].total);
-            obj[name].activitiesBudget = parseInt(budget.rows[0].activitites);
-            obj[name].flightBudget = parseInt(budget.rows[0].flight); 
-          };       
+          if (budget !== undefined) { 
+            if (budget.rows.length > 0) {
+              obj[name].hotelBudget = parseInt(budget.rows[0].total);
+              obj[name].activitiesBudget = parseInt(budget.rows[0].activitites);
+              obj[name].flightBudget = parseInt(budget.rows[0].flight); 
+            }; 
+          };
         });
     });
     setTimeout(function() {
@@ -284,18 +291,4 @@ module.exports.addCommentToBookmark = function(req, res, next) {
                     });
     };
   });
-};
-
-module.exports.viewTripBookmark = function(req, res, next) {
-  //example // viewTripBookmark({tripname : 'abc123'})
-  console.log( "<--- Trip Bookmarks...");
-  db.query('SELECT * FROM bookmarks WHERE trip_id = (SELECT id FROM trips WHERE name = ($1))', [req.body.tripname],
-    function(err, data) {
-      // res.send({data:data.rows});
-  });
-}
-
-module.exports.editUserPreferences = function(req, res, next) {
-
-
 };
