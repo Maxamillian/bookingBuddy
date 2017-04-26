@@ -8,10 +8,11 @@
     "lint": "eslint client/src/*.js",
     "dev": "webpack-dev-server --inline --content-base .",
     "build": "webpack --watch",
-    "test": "jest"
+    "test": "jest",
+    "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js*": [
+    "*.js": [
       "prettier --single-quote --print-width 100 --write",
       "git add"
     ]
