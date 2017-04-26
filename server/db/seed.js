@@ -16,16 +16,10 @@ db.connect(function(err) {
     'CREATE TABLE \
                   users( \
                   id SERIAL PRIMARY KEY, \
-<<<<<<< HEAD
-                  nameF VARCHAR(50) not null, \
-                  nameL VARCHAR(50) not null, \
-                  email VARCHAR(50) not null)');
-=======
                   nameF VARCHAR(30) not null, \
                   nameL VARCHAR(30) not null, \
                   email VARCHAR(50) not null)'
   );
->>>>>>> Add groupDates component, change email max length
 
   db.query(
     'CREATE TABLE \

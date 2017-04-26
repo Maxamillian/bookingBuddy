@@ -84,48 +84,6 @@ var tripMaster = function(obj) {
             console.error('Error in db.js on line 81:', err);
           }
 
-<<<<<<< HEAD
-      db.query('INSERT INTO \
-                      userTrips(user_id, trip_id) \
-                      VALUES($1, $2) RETURNING id',
-                      [userResults.rows[0].id, tripResults.rows[0].id], function(err, userTripsResults) {
-                        if (err) {
-                          // res.send(err)
-                        }
-                        // console.log(userTripsResults.rows[0], "HELLO!");
-      db.query('INSERT INTO \
-                      dates(beging, ending, duration, trip_id, trip_number) \
-                      VALUES($1, $2, $3, $4, $5) RETURNING id',
-                      [obj.beginDate.slice(5)+'/'+obj.beginDate.slice(0,4), obj.endDate.slice(5)+'/'+obj.endDate.slice(0,4), obj.duration, userTripsResults.rows[0].id, tripResults.rows[0].id], function(err, dateResults) {
-                        if (err) {
-                          // res.send(err)
-                        }
-
-
-      db.query('INSERT INTO \
-                      budget(total, trip_id, flight, activitites) \
-                      VALUES($1, $2, $3, $4) RETURNING id',
-                      [obj.hotelBudget, userTripsResults.rows[0].id, obj.flightBudget, obj.activitiesBudget], function(err, budgetResults) {
-                        if (err) {
-                          // res.send(err)
-                        }
-
-      obj.locations.forEach(function(location, ind, coll) {
-      db.query('INSERT INTO \
-                      locations(name, user_trip_id, trip_id) \
-                      VALUES($1, $2, $3) RETURNING id',
-                      [location, userTripsResults.rows[0].id, tripResults.rows[0].id], function(err, userResults) {
-                        if (err) {
-                          // res.send(err)
-                        }
-                      });
-                    });
-                  });
-                });
-              });
-            });
-          });
-=======
           db.query(
             'INSERT INTO \
                   userTrips(user_id, trip_id) \
@@ -190,7 +148,6 @@ var tripMaster = function(obj) {
       );
     }
   );
->>>>>>> Add groupDates component, change email max length
 };
 
 // console.log(obj.buddies, "BUDDIES!")
