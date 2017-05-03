@@ -266,6 +266,9 @@ class TripRoom extends Component {
       data: expediaQueryParams,
       success: function(expediaResults) {
         handleResults(expediaResults);
+      },
+      error: function(error) {
+        console.error('Error fetching hotels from Expedia:', error);
       }
     });
   }

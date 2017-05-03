@@ -10,24 +10,13 @@ class LandingPage extends Component {
     super(props);
   }
 
-  handleRoomChange(event) {
-    this.state.socket.emit('room', event.target.value);
-
-    this.setState({
-      activeRoom: event.target.value
-    });
-
-  }
-
   componentDidMount() {
     $(document).ready(function() {
       $('.parallax').parallax();
-      $('select').material_select();
     });
   }
 
   render() {
-    console.log(this.state.activeRoom);
     return (
       <div>
         <div className="no-pad-bot" id="index-banner">
