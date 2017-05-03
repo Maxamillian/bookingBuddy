@@ -1,9 +1,0 @@
-module.exports = {
-  AUTH0_CLIENT_ID: 'm3sCpB7ahZJh5XUX325IwG0uluuqkrRN',
-  AUTH0_DOMAIN: 'bookingbuddy.auth0.com',
-  HOTWIRE_API_KEY: '93w4ahrxdpy96pj6mxnaxn2t',
-  SKYSCANNER_API_KEY: 'bo627419382875737954157979434977',
-  EXPEDIA_CID: '379639',
-  EXPEDIA_API_KEY: '65cc419lbqf590p1njeuv4p0q0',
-  EXPEDIA_SECRET: 'bvp038hq772sm'
-};

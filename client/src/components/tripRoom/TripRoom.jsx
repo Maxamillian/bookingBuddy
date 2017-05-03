@@ -33,6 +33,8 @@ class TripRoom extends Component {
     this.setState({
       selectedLocation: event.target.value
     });
+    console.log('getting new hotels form expedia!');
+    setTimeout(this.getTripRecomendationFromExpedia, 100);
   }
 
   getVoteTotal(bookmark){
@@ -46,33 +48,53 @@ class TripRoom extends Component {
   }
 
   addBookmark(newBookmark) {
-
     //ensure that we do not repeat a hotel that has already been bookmarked
+    var alreadyBookmarkedThisOne = false;
+    var bookmarkID = '';
     for(var i=0; i< this.state.bookmarks.length; i++){
-      if(this.state.bookmarks[i].bookmarkedHotelId === newBookmark.bookmarkedHotelId){
-        console.log('ain\'t nobody got time for duplicate bookmarks');
+      if(+this.state.bookmarks[i].bookmarkedHotelId === newBookmark.bookmarkedHotelId){
+        alreadyBookmarkedThisOne = true;
+        bookmarkID = this.state.bookmarks[i].bookmarkID;
       }
     }
+    if(!alreadyBookmarkedThisOne){
+      newBookmark['bookmarkID'] = Date.now();
+      newBookmark['buddyVotes'] = this.state.buddyList.map((buddy) => ({
+        buddyName: buddy.name.split(' ')[0],
+        buddyEmail: buddy.email,
+        buddyVote: 0
+      }));
+      newBookmark['tripId'] = this.state.tripId;
+      newBookmark['bookmarkerName'] = this.props.profile.given_name;
+      newBookmark['bookmarkComments']= [];
 
-    newBookmark['bookmarkID'] = Date.now();
-    newBookmark['buddyVotes'] = this.state.buddyList.map((buddy) => ({
-      buddyName: buddy.name.split(' ')[0],
-      buddyEmail: buddy.email,
-      buddyVote: 0
-    }));
-    newBookmark['tripId'] = this.state.tripId;
-    newBookmark['bookmarkerName'] = this.props.profile.given_name;
-    newBookmark['bookmarkComments']= [];
+      //sort bookmarks array after adding new bookmark
+      var newBookmarks = this.state.bookmarks.concat(newBookmark)
+      newBookmarks = this.sortBookmarks(newBookmarks);
 
-    //sort bookmarks array after adding new bookmark
-    var newBookmarks = this.state.bookmarks.concat(newBookmark)
-    newBookmarks = this.sortBookmarks(newBookmarks);
+      this.setState({
+        bookmarks: newBookmarks
+      });
 
-    this.setState({
-      bookmarks: newBookmarks
-    });
+      this.addNewBookmarktoDB(newBookmark);
+    } else {
+      alert('Great minds think alike! One of your buddies already bookmarked this hotel so we just took the liberty of upvoting that bookmark and leaving your note as a comment to let everyone know what you like about this hotel!');
 
-    this.addNewBookmarktoDB(newBookmark);
+        var buddyVote = {
+          buddyEmail: this.props.profile.email,
+          buddyName: this.props.profile.name.split(' ')[0],
+          buddyVote: 1
+        }
+        this.updateBookmarkVote(bookmarkID, buddyVote);
+
+        var bookmarkComment = {
+          buddyName: this.props.profile.given_name,
+          buddyEmail: this.props.profile.email,
+          date: Date.now(),
+          comment: newBookmark.bookmarkerNote,
+        }
+        this.addBookmarkComment(bookmarkID, bookmarkComment);
+    }
 
   }
 
@@ -82,8 +104,8 @@ class TripRoom extends Component {
 
     var dataToSent = newBookmark;
 
-    console.log('send AJAX request to ADD NEW BOOKMARK to DB');
-    console.log(dataToSent);
+    // console.log('send AJAX request to ADD NEW BOOKMARK to DB');
+    // console.log(dataToSent);
 
     //@back_end_magicician_preston
     //fire off ajax requests to add new bookmark to our DB by uncommenting function below
@@ -94,7 +116,7 @@ class TripRoom extends Component {
       dataType: 'json',
       data: newBookmark,
       success: function(data) {
-        console.log('Bookmark Added');
+        // console.log('Bookmark Added');
       }.bind(this)
     });
   }
@@ -131,8 +153,8 @@ class TripRoom extends Component {
       updatedBuddyVote : updatedBuddyVote
     };
 
-    console.log('send AJAX request to UPDATE BOOKMARK VOTE in DB');
-    console.log(dataToSent);
+    // console.log('send AJAX request to UPDATE BOOKMARK VOTE in DB');
+    // console.log(dataToSent);
 
     //@back_end_magicician_preston
     //uncommenting function below to fire off ajax requests to update a bookmark vote in DB
@@ -143,7 +165,7 @@ class TripRoom extends Component {
       dataType: 'json',
       data: dataToSent,
       success: function(data) {
-        console.log('Update Vote', data);
+        // console.log('Update Vote', data);
       }.bind(this)
     });
   }
@@ -170,8 +192,8 @@ class TripRoom extends Component {
       commentObj: newComment
     };
 
-    console.log('send AJAX request to ADD BOOKMARK COMMENT in DB');
-    console.log(dataToSent);
+    // console.log('send AJAX request to ADD BOOKMARK COMMENT in DB');
+    // console.log(dataToSent);
 
     //@back_end_magicician_preston
     //uncommenting function below to fire off ajax requests to add a new comment to a bookmark in DB
@@ -182,25 +204,25 @@ class TripRoom extends Component {
       dataType: 'json',
       data: dataToSent,
       success: function(data) {
-        console.log('Update Vote');
+        // console.log('Update Vote');
       }.bind(this)
     });
   };
 
   componentDidMount() {
-    console.log('getting current trip data for trip # ' + this.props.tripId);
+    // console.log('getting current trip data for trip # ' + this.props.tripId);
     this.fetchTripInformationFromDb(this.props.tripId);
   }
 
   fetchTripInformationFromDb(Id){
-    console.log("GETTING TRIP DATA FROM DB!")
+    // console.log("GETTING TRIP DATA FROM DB!")
     $.ajax({
       type: 'POST',
       url: '/getTripData',
       dataType: 'json',
       data: { tripId : Id },
       success: function(data) {
-        console.log(data, "Data");
+        // console.log(data, "Data");
         var loadedTripData = {
           tripId: data.tripId,
           tripName: data.tripName,
@@ -210,7 +232,6 @@ class TripRoom extends Component {
           ending: data.commonDates.ending,
           locations: data.commonTrips,
           selectedLocation: data.commonTrips[0] || '',
-          commonLocations: data.commonTrips,
           averageNightlyHotelBudget: data.averageNightlyHotelBudget,
           buddyList: data.buddyList,
           bookmarks: data.bookmarks
@@ -222,22 +243,17 @@ class TripRoom extends Component {
   }
 
   getTripRecomendationFromExpedia(){
-    console.log('off to see bout dem expedia recs you asked for...');
-
     var expediaQueryParams = {
       beginningDate : this.state.beginning, //this.state.beginning,
-      endingDate : '5/12/2017', //this.state.ending,
+      endingDate : this.state.ending, //this.state.ending,
       location : this.state.selectedLocation, //this.state.selectedLocation
     };
-    console.log('this.state.beginning');
-    console.log(this.state.beginning);
-    console.log(typeof this.state.beginning);
 
     console.log('expediaQueryParams', expediaQueryParams);
 
     var handleResults = function(expediaResults){
       expediaResults = expediaResults.HotelSummary;
-      console.log('handling results from expedia', expediaResults);
+      console.log('hotelRecomendations', expediaResults);
       this.setState({
         hotelRecomendations: expediaResults
       });
@@ -249,56 +265,20 @@ class TripRoom extends Component {
       dataType: 'json',
       data: expediaQueryParams,
       success: function(expediaResults) {
-        console.log(expediaResults, "expediaResults have arrived!");
         handleResults(expediaResults);
       }
     });
   }
 
 
-  getTripRecomendationFromExpedia(){
-    console.log('off to see bout dem expedia recs you asked for...');
-
-    var expediaQueryParams = {
-      beginningDate : this.state.beginning, //this.state.beginning,
-      endingDate : '5/12/2017', //this.state.ending,
-      location : this.state.selectedLocation, //this.state.selectedLocation
-    };
-    console.log('this.state.beginning');
-    console.log(this.state.beginning);
-    console.log(typeof this.state.beginning);
-
-    console.log('expediaQueryParams', expediaQueryParams);
-
-    var handleResults = function(expediaResults){
-      expediaResults = expediaResults.HotelSummary;
-      console.log('handling results from expedia', expediaResults);
-      this.setState({
-        hotelRecomendations: expediaResults
-      });
-    }.bind(this);
-
-    $.ajax({
-      type: 'POST',
-      url: '/expedia',
-      dataType: 'json',
-      data: expediaQueryParams,
-      success: function(expediaResults) {
-        console.log(expediaResults, "expediaResults have arrived!");
-        handleResults(expediaResults);
-      }
-    });
-  }
 
   render() {
 
     if(!this.state.hotelRecomendations.length){
-      console.log('Loading!', this.state);
       return (
         <Loading />
       );
     } else {
-      console.log('hotel recs have arrived: checkout da state:', this.state);
       return (
         <div>
 

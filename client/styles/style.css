@@ -1,6 +1,14 @@
-h5, h4 {
+/**
+ * Breakpoints
+ * Small screens: max-width of 600px
+ * Medium screens: max-width of 992px
+ * Large screen: min-width of 993px
+ * Extra Large screen: min-width of 1200px
+ */
+
+/*h5, h4 {
   text-align: center;
-}
+}*/
 
 .icon-block {
   padding: 0 15px;
@@ -34,6 +42,11 @@ h5, h4 {
 /* # Profile Page
 ________________________________________*/
 
+.ProfileTrips .collapsible-header {
+  margin-bottom: 0;
+  margin-top: 0;
+  text-align: center;
+}
 
 /* # Trip Preferences Page
 ________________________________________*/
@@ -104,6 +117,7 @@ ________________________________________*/
 .friendsBox {
   border: 2px solid orange;
   border-radius: 5px;
+  padding: 5px;
 }
 
 
@@ -126,6 +140,30 @@ span[class^="preferences-"] .material-icons {
 
 /* ## Bookmarks
 ---------------------------------------- */
+
+.collection .collection-item.trip-bookmark {
+  padding: 0;
+}
+
+.bookmark-main {
+  padding: 20px 10px;
+}
+
+.bookmark-comments {
+  margin-bottom: 0;
+}
+
+.bookmark-comments > .col {
+  padding: 0;
+}
+
+.bookmark-comments > .col > .collapsible {
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  box-shadow: none;
+  margin: 0;
+}
 
 .bookmark-comments form {
   border-bottom: 1px solid #e0e0e0;
@@ -174,8 +212,28 @@ span[class^="preferences-"] .material-icons {
 /* # Homepage
 ---------------------------------------- */
 
+.homepage-section {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-flow: column nowrap;
+      flex-flow: column nowrap;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+          justify-content: center;
+  min-height: calc(100vh * 0.75);
+  padding-top: 90px;
+  padding-bottom: 90px;
+}
+
+.homepage-section .row:last-of-type {
+  margin-bottom: 0;
+}
+
 .parallax-container {
-  min-height: 400px;
   line-height: 0;
   height: auto;
 }
@@ -199,13 +257,35 @@ span[class^="preferences-"] .material-icons {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
           justify-content: center;
-  padding-top: 60px;
-  padding-bottom: 60px;
+}
+
+.homepage-intro .parallax::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0) 100%);
+  height: 100%;
+  width: 100%;
 }
 
 .homepage-data {
   padding-top: 60px;
   padding-bottom: 60px;
+}
+
+.homepage-process .section {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+.homepage-process .section:first-of-type {
+  padding-top: 0;
+}
+
+.homepage-process .section:last-of-type {
+  padding-bottom: 0;
 }
 
 .homepage-cta .parallax::after {
@@ -219,12 +299,30 @@ span[class^="preferences-"] .material-icons {
   width: 100%;
 }
 
-/* # Landing Page
----------------------------------------- */
-
 .bling-header {
   font-size: 44px;
   padding: 5px 0 9px 0;
+}
+
+.bubble {
+  display: inline-block;
+  background-color: #9ccc65;
+  padding: 2%;
+  border-radius:50%;
+}
+.little {
+  padding: 5px;
+}
+.tiny {
+  padding: 3px;
+}
+
+@media (min-width: 600px) {
+
+  .homepage-intro .container {
+    max-width: 60%;
+  }
+
 }
 
 /* # Nav Bar
@@ -245,11 +343,68 @@ div.tripRoomMainContentContainer.col {
   padding-right: 2%;
 }
 
-/* # Trip Room
----------------------------------------- */
+.recommendation-card  .card-image {
+  max-width: 100%;
+  width: 100%;
+}
+
+.recommendation-card .card-image::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.35) 65%, rgba(0,0,0,0.65) 100%);
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.35) 65%, rgba(0,0,0,0.65) 100%);
+}
+
+.recommendation-card  .card-image .card-title {
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.35);
+}
+
+@media (min-width: 600px) {
+
+  .recommendation-card.horizontal  .card-image {
+    max-width: 45%;
+    width: 100%;
+  }
+
+}
+
 .chatMessageContainer {
   background-color: #dee2e8;
   border-radius: 20px;
   display: inline-block;
   padding: 5px 10px;
+}
+
+.main-stars {
+  position: relative;
+}
+
+.half-star {
+  position: relative;
+  margin-left: 5px;
+}
+
+.half-star::after {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background-color: #fff;
+  z-index: 99;
+}
+
+/* # Live Chat
+---------------------------------------- */
+
+.chat-window {
+  max-height: calc(100vh * 0.55);
+  overflow: auto;
 }

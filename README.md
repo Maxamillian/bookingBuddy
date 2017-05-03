@@ -1,6 +1,8 @@
 # Project Name
 
-> Pithy project description
+Booking Buddy
+
+Booking Buddy is an online application that allows groups of friends to connect and make trip decision planning into a seamless, well organized, and painless process. 
 
 ## Team
 
@@ -20,9 +22,11 @@
 
 ## Usage
 
-> Some usage instructions
+To run this application, simply run node server/server.js from the root directory of the repository
 
 ## Requirements
+
+This application runs on nodejs with express server.  It will require a postgres database.  The build process uses webpack and can be invoked with 'yarn build'.  Once the application is running, it will be available on localhost at port 3000.
 
 ## Development
 
@@ -38,7 +42,7 @@ Test that Yarn is running with `yarn --version`
 
 ### Roadmap
 
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
+View the project roadmap [https://github.com/Aquilans/bookingBuddy/issues]
 
 
 ## Contributing

@@ -7,6 +7,10 @@ const LoginStatusDisplay = ({isLoggedIn, logInOrOut}) => (
   </NavLink>
 );
 
+$( document ).ready(function() {
+  $(".button-collapse").dropdown();
+});
+
 // Navigation Menu
 const NavBarLinks = ({isLoggedIn, logInOrOut}) => (
   <nav className="green lighten-1" role="navigation">
@@ -18,11 +22,10 @@ const NavBarLinks = ({isLoggedIn, logInOrOut}) => (
               <li><NavLink to="/profile">My Profile</NavLink></li>
           :
             <span>
-              <li><NavLink exact to="/landingPage">Home</NavLink></li>
+              <li><NavLink exact to="/">Home</NavLink></li>
               <li><NavLink to="/about-us">About Us</NavLink></li>
             </span>
         }
-        <li><NavLink to="/start-planning">Start Planning</NavLink></li>
         <li><LoginStatusDisplay isLoggedIn={isLoggedIn} logInOrOut={logInOrOut} /></li>
       </ul>
 
@@ -32,14 +35,13 @@ const NavBarLinks = ({isLoggedIn, logInOrOut}) => (
               <li><NavLink to="/profile">My Profile</NavLink></li>
           :
             <span>
-              <li><NavLink exact to="/landingPage">Home</NavLink></li>
+              <li><NavLink exact to="/">Home</NavLink></li>
               <li><NavLink to="/about-us">About Us</NavLink></li>
             </span>
         }
-        <li><NavLink to="/start-planning">Start Planning</NavLink></li>
         <li><LoginStatusDisplay isLoggedIn={isLoggedIn} logInOrOut={logInOrOut} /></li>
       </ul>
-      <a href="#" data-activates="nav-mobile" className="button-collapse"><i className="material-icons">menu</i></a>
+      <a className="button-collapse" href="#" data-activates="nav-mobile"><i className="material-icons">menu</i></a>
     </div>
   </nav>
 );

@@ -14,7 +14,7 @@ var ProfileTrip = function({trip, selectTrip}) {
       <div className="collapsible-body center-align">
         <p className="center-align flow-text">{trip.description}</p>
         <Link className="orange btn" to="/trip-room">View Trip Room</Link>
-        <Link className="orange btn" to="/start-planning/trip-preferences">My Trip Preferences</Link>
+        <Link className="orange btn" to="/trip-preferences">My Trip Preferences</Link>
       </div>
     </li>
   );

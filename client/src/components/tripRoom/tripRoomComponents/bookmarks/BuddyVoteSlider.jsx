@@ -11,7 +11,7 @@ var VoteButton = function ({text, selected, handleClick}) {
 var BuddyVoteSlider = function ({bookmarkID, buddyVoteObj, updateBookmarkVote}) {
   // var socket = io();
 
-  var vote = buddyVoteObj.buddyVote;
+  var vote = +buddyVoteObj.buddyVote;
 
   var updateVote = function(num) {
 

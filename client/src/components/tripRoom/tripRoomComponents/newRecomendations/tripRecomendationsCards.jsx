@@ -31,7 +31,7 @@ class TripRecomendationsCards extends React.Component {
   }
 
   bookmarkThisRec(bookmarkerNote) {
-    var bookmarkedHotelObject = this.props.hotelRecomendations[this.state.currentRecIndex]
+    var bookmarkedHotelObject = this.props.hotelRecomendations[this.state.currentRecIndex];
     var newBookmark = {
       bookmarkedHotelId: bookmarkedHotelObject.hotelId,
       bookmarkerNote: bookmarkerNote
@@ -41,16 +41,19 @@ class TripRecomendationsCards extends React.Component {
 
   render() {
     return (
-      <div>
-          <div className="card hoverable">
-            <DisplayCurrentRec
-              currentRec={this.props.hotelRecomendations[this.state.currentRecIndex]}
-              className="card-action"
-            />
-            <div className="card-action">
+
+      <div className="section">
+        <div className="row">
+          <DisplayCurrentRec
+            currentRec={this.props.hotelRecomendations[this.state.currentRecIndex]}
+            className="card-action"
+          />
+          <div className="card-action">
+            <div className="right-align">
               <a onClick={this.advanceToNextRec}>Next</a>
             </div>
           </div>
+        </div>
         <Bookmarker bookmarkThisRec={this.bookmarkThisRec}/>
       </div>
     );

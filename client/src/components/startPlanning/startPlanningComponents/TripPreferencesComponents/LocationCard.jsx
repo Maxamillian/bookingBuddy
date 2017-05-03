@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {tripData} from '../../../tripRoom/data/tripRoomDynamicData';
 //import {friendsData} from '../../../tripRoom/data/friendsDummyData';
 import {
   BrowserRouter as Router,
@@ -13,30 +12,34 @@ const FriendsLocationsList = ({friendsData}) => {
   console.log(friendsData,"friendsData!")
   var uniqueLocations = [];
   var friendsLocations;
-  if (Object.keys(friendsData).length !== 0) { 
+  if (Object.keys(friendsData).length !== 0) {
     for (var key in friendsData) {
-      friendsLocations = friendsData[key].locations.map(
-        (location, index) => {
-        if (!uniqueLocations.includes(location)) {
-          uniqueLocations.push(location);
-        }
-      });
+      if (friendsData[key].locations.length) {
+        friendsLocations = friendsData[key].locations.map(
+          (location, index) => {
+          if (!uniqueLocations.includes(location)) {
+            uniqueLocations.push(location);
+          }
+        });
+      }  
     }
     var locations = uniqueLocations.map(
-      (location, index) =>{        
+      (location, index) =>{
         return (
           <span className="checkbox" key={index}>
             <input type="checkbox" className="filled-in" id="filled-in-box" ></input>
             <label htmlFor="filled-in-box">{location}</label>
           </span>
         );
-      });  
+      });
     return (
-      <div><p className="orange-text darken-2">These are the locations your friends have already selected:</p>
+      <div className="friendsBox"><p className="orange-text darken-2">These are the locations your friends have already selected:</p>
          <span>{locations}</span>
       </div>
     );
-  }  
+  } else {
+    return null;
+  }
 };
 
 
@@ -59,12 +62,12 @@ const LocationsList = ({locations}) => {
 };
 
 
-// class LocationCard extends Component {  
+// class LocationCard extends Component {
 //   constructor(props) {
 //     super(props);
 //     this.changeLocation = this.changeLocation.bind(this);
 //     this.addLocation = this.addLocation.bind(this);
-//   }  
+//   }
 
 //   addLocation (e) {
 
@@ -102,20 +105,20 @@ var LocationCard = function({changeLocation, location, addLocation, locations, f
             <div className="row locationInput">
               <div>
                 <input type="text" id="autocomplete-input" className="autocomplete" placeholder="Tell us where you would like to go" onClick={changeLocation} onChange={changeLocation} value={location} />
-              </div>  
+              </div>
                   <button onClick={addLocation} className="btn btn-large orange">Add Location</button>
-            </div>    
+            </div>
             <LocationsList locations={locations} />
           </div>
           <div className="col s1">
           </div>
-          <div className="friendsBox col s4">
+          <div className="col s4">
             <FriendsLocationsList friendsData={friendsData} />
           </div>
         </div>
       </div>
     </li>
   )
-};   
+};
 
 export default LocationCard;

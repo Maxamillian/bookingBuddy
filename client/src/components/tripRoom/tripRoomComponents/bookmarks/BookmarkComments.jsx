@@ -43,7 +43,7 @@ class BookmarkComments extends Component {
 
   render() {
     return (
-      <ul className="collapsible bookmark-comments" data-collapsible="accordion">
+      <ul className="collapsible" data-collapsible="accordion">
         <li>
           <div className="collapsible-header">
             <span>Comments</span>
@@ -59,7 +59,7 @@ class BookmarkComments extends Component {
                   onChange={this.bookmarkCommentChange}
                   value={this.state.bookmarkCommentText}
                 ></textarea>
-                <label for="comment-input">What do you think?</label>
+                <label>What do you think?</label>
               </div>
               <div className="comment-submit">
                 <button type="submit" className="btn orange">Add Comment</button>

@@ -24,7 +24,7 @@ class DropDownFilter extends Component {
     ));
 
     return (
-      <select className='multiple' value={selectedLocation} onChange={setter}>
+      <select className="browser-default" value={selectedLocation} onChange={setter}>
         {options}
       </select>
     );

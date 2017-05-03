@@ -1,7 +1,6 @@
 import { EventEmitter } from 'events';
 import Auth0Lock from 'auth0-lock';
 import { isTokenExpired } from './jwtHelper';
-import {tripData} from '../components/tripRoom/data/tripRoomDynamicData';
 
 export default class AuthService extends EventEmitter {
   constructor(clientId, domain) {
@@ -23,21 +22,23 @@ export default class AuthService extends EventEmitter {
   _doAuthentication(authResult) {
     // console.log('authResult', authResult);
 
-    this.lock.getUserInfo(authResult.accessToken, (function(error, userProfile) {
-      if (error) {
-        console.log('Error loading the Profile', error);
-      }
-      // Store the token from authResult for later use
-      this.setToken(authResult.accessToken);
-      // console.log('accessToken', authResult.accessToken);
-      // this.setToken(authResult.accessToken);
+    this.lock.getUserInfo(
+      authResult.accessToken,
+      function(error, userProfile) {
+        if (error) {
+          console.log('Error loading the Profile', error);
+        }
+        // Store the token from authResult for later use
+        this.setToken(authResult.accessToken);
+        // console.log('accessToken', authResult.accessToken);
+        // this.setToken(authResult.accessToken);
 
-      // Display user information
-      this.setProfile(userProfile);
-      // console.log('Profile: ', userProfile);
-      // localStorage.setItem('user_profile', JSON.stringify(profile));
-
-    }).bind(this));
+        // Display user information
+        this.setProfile(userProfile);
+        // console.log('Profile: ', userProfile);
+        // localStorage.setItem('user_profile', JSON.stringify(profile));
+      }.bind(this)
+    );
   }
 
   login() {
@@ -65,7 +66,6 @@ export default class AuthService extends EventEmitter {
   setProfile(userProfile) {
     localStorage.setItem('user_profile', JSON.stringify(userProfile));
     // Triggers profile_updated event to update the UI
-    tripData.profile = userProfile;
     this.emit('profile_updated', userProfile);
   }
 

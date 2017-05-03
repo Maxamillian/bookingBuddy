@@ -16,8 +16,8 @@ db.connect(function(err) {
     'CREATE TABLE \
                   users( \
                   id SERIAL PRIMARY KEY, \
-                  nameF VARCHAR(30) not null, \
-                  nameL VARCHAR(30) not null, \
+                  nameF VARCHAR(50) not null, \
+                  nameL VARCHAR(50) not null, \
                   email VARCHAR(50) not null)'
   );
 
@@ -26,7 +26,7 @@ db.connect(function(err) {
                   trips( \
                   id SERIAL PRIMARY KEY, \
                   description VARCHAR(300), \
-                  name VARCHAR(25) not null)'
+                  name VARCHAR(100) not null)'
   );
 
   db.query(
@@ -62,7 +62,7 @@ db.connect(function(err) {
     'CREATE TABLE \
                   locations( \
                   id SERIAL PRIMARY KEY, \
-                  name VARCHAR(25) not null, \
+                  name VARCHAR(50) not null, \
                   trip_id INTEGER REFERENCES trips(id), \
                   user_trip_id INTEGER REFERENCES userTrips(id))'
   );
@@ -72,8 +72,8 @@ db.connect(function(err) {
                   bookmarks( \
                   id SERIAL PRIMARY KEY, \
                   bookmark_id VARCHAR(26), \
-                  name VARCHAR(30), \
-                  hotel_id VARCHAR(30), \
+                  name VARCHAR(50), \
+                  hotel_id VARCHAR(50), \
                   bookmark VARCHAR(300), \
                   trip_id INTEGER REFERENCES trips(id))'
   );
@@ -83,7 +83,7 @@ db.connect(function(err) {
                   comments( \
                   id SERIAL PRIMARY KEY, \
                   client_id VARCHAR(26), \
-                  name VARCHAR(30), \
+                  name VARCHAR(50), \
                   email VARCHAR(50), \
                   comment VARCHAR(300), \
                   trip_id INTEGER REFERENCES trips(id), \
@@ -94,7 +94,7 @@ db.connect(function(err) {
     'CREATE TABLE \
                   votes( \
                   id SERIAL PRIMARY KEY, \
-                  name VARCHAR(30), \
+                  name VARCHAR(50), \
                   email VARCHAR(50), \
                   vote VARCHAR(10), \
                   trip_id INTEGER REFERENCES trips(id), \

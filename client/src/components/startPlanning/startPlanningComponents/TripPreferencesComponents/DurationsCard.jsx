@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {tripData} from '../../../tripRoom/data/tripRoomDynamicData';
 //import {friendsData} from '../../../tripRoom/data/friendsDummyData';
 import {
   BrowserRouter as Router,
@@ -24,12 +23,21 @@ const FriendNights = ({friendsData}) => {
           highest = friendsData[keys[i]].duration;
       }
     }
+    if (keys.length < 2) {
+      return (
+        <div className="friendsBox col s5">
+          <p className="icon-block orange-text darken-2">Your friend chose {highest} nights for their trip</p>
+        </div>
+      )
+    }
     return (
      <div className="friendsBox col s5">
          <p className="icon-block orange-text darken-2">Your friends chose between {lowest} and {highest} nights for their trip</p>
-    </div> 
+    </div>
     )
-  }  
+  } else {
+    return null;
+  }
 };
 
 
@@ -37,7 +45,7 @@ const FriendNights = ({friendsData}) => {
 //   constructor(props) {
 //     super(props);
 //     this.changeDuration = this.changeDuration.bind(this);
-//   }    
+//   }
 
   // changeDuration(e) {
   //   var updatedBudget = parseInt(e.target.value) * (this.props.hotelBudget + this.props.activitiesBudget) + this.props.flightBudget;
@@ -66,13 +74,13 @@ var DurationsCard = function({friendsData, duration, changeDuration}) {
               </p>
               </form>
             </div>
-            
+
                 <FriendNights friendsData={friendsData}/>
-            
+
           </div>
         </div>
       </li>
-    )};    
+    )};
 
 
-export default DurationsCard;              
+export default DurationsCard;

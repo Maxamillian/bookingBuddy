@@ -10,21 +10,26 @@ var TripBookmarksList = function(
   if(bookmarks.length){
     bookmarksList = bookmarks.map( (bookmark, index) => (
       <Bookmark
+        key={bookmark.bookmarkID.toString()}
         bookmark={bookmark}
         profile={profile}
         expediaParams={expediaParams}
         updateBookmarkVote={updateBookmarkVote}
         addBookmarkComment={addBookmarkComment}
-        key={index} />
+        />
     ));
   }
 
   return  (
-    <div className="row">
-      {bookmarksList}
+    <div className="section">
+      <div className="row">
+        <ul className="collection with-header">
+          <li className="collection-header center-align"><h4>Trip Bookmarks</h4></li>
+          {bookmarksList}
+        </ul>
+      </div>
     </div>
   );
 };
-
 
 module.exports = TripBookmarksList;

@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 import 'materialize-css';
 import $ from 'jquery';
-import {tripsArray} from '../tripRoom/data/tripRoomDummyData';
+//import {tripsArray} from '../tripRoom/data/tripRoomDummyData';
 
 
 import ProfileUserInfo from './ProfileUserInfo.jsx';
@@ -17,22 +17,28 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tripsArray: tripsArray,
+      tripsArray: [],
     };
   }
 
   componentWillMount() {
   //this ajax request will get all trips assiciated with any user according to thier email address
     //only thing that will change is the email address from the data object below
-    this.getTripNames(this.props.profile.email);
+    var email = this.props.profile.email;
+    var name = this.props.profile.name;
+    var getTrips = this.getTripNames;
+    getTrips = getTrips.bind(this);
+    setTimeout(()=>{getTrips(email, name)}, 1000);
   }
 
-  getTripNames(email){
+  getTripNames(email, name){
+
     $.ajax({
       type: 'POST',
       url: '/userTripNames',
       dataType: 'json',
-      data: { email : email },
+      data: { email : email,
+              name: name },
       success: function(data) {
         this.setState({tripsArray:data});
       }.bind(this)
@@ -53,7 +59,7 @@ class Profile extends Component {
                 <ProfileTripsList userTripsArr={this.state.tripsArray} selectTrip={this.props.selectTrip} />
                 <div className="divider"></div>
                 <div className="section center-align">
-                  <Link className="orange btn" to="/start-planning/trip-create">CREATE NEW TRIP</Link>
+                  <Link className="orange btn" to="/trip-create">CREATE NEW TRIP</Link>
                 </div>
               </div>
             </div>
